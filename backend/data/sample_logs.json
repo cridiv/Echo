@@ -1,0 +1,46 @@
+[
+  {
+    "id": "log_001",
+    "timestamp": "2024-01-15T14:23:45Z",
+    "level": "ERROR",
+    "service": "auth-service",
+    "message": "Database connection timeout after 30s",
+    "context": {"user_id": "12345", "endpoint": "/login", "retry_count": 3},
+    "trace_id": "trace_abc123"
+  },
+  {
+    "id": "log_002",
+    "timestamp": "2024-01-15T14:24:12Z",
+    "level": "ERROR",
+    "service": "user-service",
+    "message": "Failed to authenticate user: invalid token",
+    "context": {"user_id": "12345", "token_hash": "xyz789"},
+    "trace_id": "trace_abc123"
+  },
+  {
+    "id": "log_003",
+    "timestamp": "2024-01-15T14:25:30Z",
+    "level": "INFO",
+    "service": "auth-service",
+    "message": "Database connection restored",
+    "context": {"connection_pool": "primary", "latency": "120ms"}
+  },
+  {
+    "id": "log_004",
+    "timestamp": "2024-01-15T14:30:15Z",
+    "level": "WARN",
+    "service": "payment-service",
+    "message": "Slow response from external payment gateway",
+    "context": {"gateway": "stripe", "response_time": "850ms"},
+    "trace_id": "trace_xyz789"
+  },
+  {
+    "id": "log_005",
+    "timestamp": "2024-01-15T14:31:10Z",
+    "level": "ERROR",
+    "service": "notification-service",
+    "message": "Email delivery failed due to SMTP server issue",
+    "context": {"email": "user@example.com", "smtp_code": "421"},
+    "trace_id": "trace_email421"
+  }
+]

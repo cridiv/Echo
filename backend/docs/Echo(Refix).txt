@@ -1,0 +1,82 @@
+Echo(Refix)
+
+Echo is an intelligent, TiDB-native observability agent designed to help developers search, understand, and act on logs, metrics, and system behavior — all through natural language.
+
+Built with LangChain and deeply integrated with TiDB, Echo transforms your operational data into a conversational assistant that gets smarter over time.
+
+⚡️ What Echo Does
+🔍 Semantic Log & Metric Search
+Instantly find relevant logs, stack traces, and performance metrics using natural language — even across millions of entries.
+
+🧠 Temporal Intelligence
+Echo understands trends, spikes, and changes across time. Ask:
+
+“When did this error first occur?”
+
+“Has this deploy affected login latency?”
+
+“Show error trends for the past 48 hours.”
+
+🕸️ Error Correlation Engine
+Echo connects related errors, services, and traces using vector similarity and graph-based memory. It doesn’t just answer — it explains root causes.
+
+📈 Lightweight Metrics & Visuals
+Ask Echo for summaries and comparisons:
+
+“Compare success rates for signup vs login last week.”
+
+“Visualize retry counts for job-worker service.”
+
+🧰 LangChain + LangSmith Tooling
+Every Echo response is traceable. Replay how Echo made a decision, what steps it took, and why — for full transparency and debugging.
+
+🧩 Tech Stack
+TiDB – High-performance HTAP database for structured + semi-structured log storage
+
+LangChain – Orchestrates reasoning, retrieval, and tool usage
+
+LangGraph – For agentic workflows like error correlation and diagnosis
+
+LangSmith – Tracks Echo’s internal decision paths
+
+OpenAI – LLMs for natural answers and summaries
+
+Time-series embedding – Echo learns when and why things go wrong
+
+🧠 Why Echo + TiDB?
+TiDB stores logs, metrics, and structured data at massive scale. Echo turns that into intelligence.
+Unlike other observability tools, Echo is:
+
+🔗 Connected – Knows relationships between logs, traces, errors, services
+
+🧭 Exploratory – You ask; Echo finds, explains, correlates
+
+🗓️ Temporal – Understands when problems emerge and evolve
+
+💬 Conversational – Answers like a teammate, not a dashboard
+
+🛠 Use Cases
+Debug Faster – “What changed before this error started happening?”
+
+Understand Deploy Impact – “Did yesterday’s deploy cause slower logins?”
+
+Correlate Incidents – “Are these three crashes related?”
+
+Summarize Outages – “Give me a postmortem summary of last night’s incident.”
+
+Visualize Performance – “Chart error rate for checkout service this week.”
+
+🧪 Roadmap
+✅ Vector-based semantic search over logs + docs
+
+✅ Temporal log ingestion and storage in TiDB
+
+🔜 Live error correlation with LangGraph
+
+🔜 Metrics charting using TiDB SQL + visualization layer
+
+🔜 LangSmith-powered observability of Echo’s own actions
+
+💬 Echo’s Edge
+Echo doesn’t just search — it thinks, learns, and explains.
+It’s your AI SRE, built to speak fluent TiDB.

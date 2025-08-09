@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2024-01-15T14:00:00Z",
+    "service": "auth-service",
+    "metric": "latency_ms",
+    "value": 312
+  },
+  {
+    "timestamp": "2024-01-15T14:01:00Z",
+    "service": "auth-service",
+    "metric": "latency_ms",
+    "value": 120
+  },
+  {
+    "timestamp": "2024-01-15T14:01:00Z",
+    "service": "auth-service",
+    "metric": "error_rate",
+    "value": 0.13
+  },
+  {
+    "timestamp": "2024-01-15T14:05:00Z",
+    "service": "user-service",
+    "metric": "auth_failures",
+    "value": 42
+  },
+  {
+    "timestamp": "2024-01-15T14:10:00Z",
+    "service": "notification-service",
+    "metric": "email_delivery_time_ms",
+    "value": 990
+  }
+]

@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain_community
+langchain_openai
+openai
+qdrant-client
+python-dotenv
+aiohttp
+tqdm
+pydantic
+faiss-cpu
+tiktoken

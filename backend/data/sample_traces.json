@@ -1,0 +1,42 @@
+[
+  {
+    "trace_id": "trace_abc123",
+    "spans": [
+      {
+        "span_id": "span1",
+        "service": "frontend",
+        "operation": "login_request",
+        "start": "2024-01-15T14:23:00Z",
+        "end": "2024-01-15T14:23:01Z"
+      },
+      {
+        "span_id": "span2",
+        "service": "auth-service",
+        "operation": "validate_user",
+        "start": "2024-01-15T14:23:01Z",
+        "end": "2024-01-15T14:23:30Z",
+        "error": "timeout"
+      },
+      {
+        "span_id": "span3",
+        "service": "user-service",
+        "operation": "fetch_profile",
+        "start": "2024-01-15T14:23:31Z",
+        "end": "2024-01-15T14:23:32Z"
+      }
+    ]
+  },
+  {
+    "trace_id": "trace_email421",
+    "spans": [
+      {
+        "span_id": "span4",
+        "service": "notification-service",
+        "operation": "send_email",
+        "start": "2024-01-15T14:30:00Z",
+        "end": "2024-01-15T14:30:30Z",
+        "error": "SMTP 421"
+      }
+    ]
+  }
+]
