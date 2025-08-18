@@ -126,3 +126,17 @@ class LogParser:
                 scored = self.score_log(parsed)
                 results.append(scored)
         return results
+
+
+def LogAgent():
+    log_files = [...]
+    log_ingester = LogIngestor(log_files)
+    logs = log_ingester.ingest_logs()
+
+    log_cleaner = LogCleaner()
+    cleaned_logs = [log_cleaner.clean_logs(log) for log in logs]
+
+    log_parser = LogParser()
+    parsed_logs = log_parser.batch_parse_and_score(cleaned_logs)
+    print(f"{len(parsed_logs)} logs parsed and scored.")
+    return parsed_logs
