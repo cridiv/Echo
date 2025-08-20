@@ -35,7 +35,7 @@ class LogSource:
 
 @dataclass
 class LogExtractor:
-    def _extract_text_and_metadata(self, item: Any) -> tuple[str, Dict[str:Any]]:
+    def _extract_text_and_metadata(self, item: Any) -> tuple[str, Dict[str, Any]]:
         if isinstance(item, str):
             return item, {}
         if isinstance(item, Dict):
