@@ -1,10 +1,7 @@
-# Agent 1: Pattern Analysis & Error Tracking Coordinator
 from typing import Dict, Any, List, Tuple, Optional
-
-# Import the classes from their respective files
-from embeddings import PatternStore
-from pattern_recognition import ErrorFrequencyTracker
-from resolution_tracker import ResolutionTracker
+from .embeddings import PatternStore
+from .pattern_recognition import ErrorFrequencyTracker
+from .resolution_tracker import ResolutionTracker
 from Semantic.embeddings import LogExtractor
 
 

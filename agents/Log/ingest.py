@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import uuid
 from typing import List, Dict, Union
 from datetime import datetime
 
@@ -36,6 +37,7 @@ class LogIngestor:
                 all_logs.extend(self._parse_plain_logs(file_path))
             else:
                 print(f"Skipping unsupported file: {file_path}")
+        print(f"Ingested logs from {len(all_logs)} files.")
         return all_logs
 
     def _parse_json_logs(self, file_path: str) -> List[Dict]:
@@ -43,9 +45,16 @@ class LogIngestor:
         with open(file_path, "r") as f:
             for line in f:
                 try:
-                    logs.append(json.loads(line.strip()))
+                    log_entry = json.loads(line.strip())
+                    # Add unique ID if not present
+                    if "id" not in log_entry:
+                        log_entry["id"] = str(uuid.uuid4())
+                    # Add source file info
+                    log_entry["source_file"] = os.path.basename(file_path)
+                    logs.append(log_entry)
                 except json.JSONDecodeError:
                     print(f"Invalid JSON in {file_path}: {line}")
+        print(f"Parsed {len(logs)} JSON logs from {file_path}")
         return logs
 
     def _parse_plain_logs(self, file_path: str) -> List[Dict]:
@@ -53,8 +62,13 @@ class LogIngestor:
         with open(file_path, "r") as f:
             for line in f:
                 logs.append(
-                    {"raw": line.strip(), "source_file": os.path.basename(file_path)}
+                    {
+                        "id": str(uuid.uuid4()),  # Add unique ID
+                        "raw": line.strip(),
+                        "source_file": os.path.basename(file_path),
+                    }
                 )
+        print(f"Parsed {len(logs)} plain logs from {file_path}")
         return logs
 
 
@@ -77,34 +91,61 @@ class LogCleaner:
                 r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", "[EMAIL]", line
             )
 
+        print(f"Cleaned line: {line}")
         return line
 
-    def clean_logs(self, logs: str) -> str:
-        """Takes raw log text and cleans it line by line."""
-        cleaned_lines = [self.clean_line(line) for line in logs.splitlines()]
-        return "\n".join([line for line in cleaned_lines if line])  # remove empty lines
+    def clean_logs(self, log_entry: Dict) -> Dict:
+        """Takes a log entry dict and cleans the raw content."""
+        cleaned_entry = log_entry.copy()
+
+        if "raw" in cleaned_entry:
+            cleaned_entry["raw"] = self.clean_line(cleaned_entry["raw"])
+
+        return cleaned_entry
 
 
 class LogParser:
     def __init__(self):
         pass
 
-    def parse_logs(self, line: str):
+    def parse_logs(self, log_entry: Dict) -> Dict:
+        """Parse a log entry and extract structured data."""
+        if "raw" not in log_entry:
+            return log_entry
+
+        line = log_entry["raw"]
         pattern = r"^(?P<timestamp>\S+ \S+)\s+(?P<level>[A-Z]+)\s+(?P<message>.+)$"
         match = re.match(pattern, line)
 
-        if not match:
-            return None
+        # Start with the original log entry
+        parsed_entry = log_entry.copy()
 
-        timestamp = datetime.strptime(match.group("timestamp"), "%Y-%m-%d %H:%M:%S")
-        level = match.group("level")
-        message = match.group("message")
+        if match:
+            try:
+                parsed_entry["timestamp"] = datetime.strptime(
+                    match.group("timestamp"), "%Y-%m-%d %H:%M:%S"
+                )
+                parsed_entry["level"] = match.group("level")
+                parsed_entry["message"] = match.group("message")
+                parsed_entry["parsed"] = True
+            except ValueError:
+                # If timestamp parsing fails, mark as unparsed
+                parsed_entry["parsed"] = False
+                parsed_entry["timestamp"] = datetime.now()  # Default timestamp
+                parsed_entry["level"] = "UNKNOWN"
+                parsed_entry["message"] = line
+        else:
+            # If pattern doesn't match, mark as unparsed
+            parsed_entry["parsed"] = False
+            parsed_entry["timestamp"] = datetime.now()  # Default timestamp
+            parsed_entry["level"] = "UNKNOWN"
+            parsed_entry["message"] = line
+        print(f"Parsed log entry: {parsed_entry}")
+        return parsed_entry
 
-        return {"timestamp": timestamp, "level": level, "message": message}
-
-    def score_log(self, parsed_log: Dict):
-        # Basic scoring based on log level
-        level = parsed_log["level"]
+    def score_log(self, parsed_log: Dict) -> Dict:
+        """Add scoring based on log level."""
+        level = parsed_log.get("level", "UNKNOWN")
 
         if level == "ERROR":
             score = 0.9
@@ -118,25 +159,31 @@ class LogParser:
         parsed_log["score"] = score
         return parsed_log
 
-    def batch_parse_and_score(self, log_lines: List[str]):
+    def batch_parse_and_score(self, log_entries: List[Dict]) -> List[Dict]:
+        """Process multiple log entries."""
         results = []
-        for line in log_lines:
-            parsed = self.parse_logs(line)
-            if parsed:
-                scored = self.score_log(parsed)
-                results.append(scored)
+        for log_entry in log_entries:
+            parsed = self.parse_logs(log_entry)
+            scored = self.score_log(parsed)
+            results.append(scored)
+        print(f"Processed {len(results)} log entries.")
         return results
 
 
 def LogAgent():
     log_files = [...]
+
+    # Step 1: Ingest logs (now with IDs)
     log_ingester = LogIngestor(log_files)
     logs = log_ingester.ingest_logs()
 
+    # Step 2: Clean logs
     log_cleaner = LogCleaner()
     cleaned_logs = [log_cleaner.clean_logs(log) for log in logs]
 
+    # Step 3: Parse and score logs
     log_parser = LogParser()
     parsed_logs = log_parser.batch_parse_and_score(cleaned_logs)
+
     print(f"{len(parsed_logs)} logs parsed and scored.")
     return parsed_logs

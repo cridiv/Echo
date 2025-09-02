@@ -1,6 +1,6 @@
+from __future__ import annotations
 import hashlib
 import chromadb
-from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Dict, Any, Sequence

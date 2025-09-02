@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, Optional, Tuple
-from embeddings import LogEmbeddingPipeline, EmbeddingConfig
+from .embeddings import LogEmbeddingPipeline, EmbeddingConfig
 
 
 class SemanticAgent:
